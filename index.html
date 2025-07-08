@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InkAura Bookstore</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* Base Styles */
+    :root {
+      --primary-color: #6d466b;
+      --secondary-color: #8e6e95;
+      --background-color: #f7f4ef;
+      --text-color: #3b3a36;
+      --header-bg: #fff9f0;
+      --border-color: #e0dcd5;
+      --topbar-bg: #2c3e50;
+      --topbar-text: #ecf0f1;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    /* Top Bar Styles */
+    .top-bar {
+      background: var(--topbar-bg);
+      color: var(--topbar-text);
+      padding: 0.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .top-bar-left {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .top-bar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .top-bar-right {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      color: var(--topbar-text);
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-icon:hover {
+      color: var(--secondary-color);
+    }
+
+    /* Main Navigation Styles */
+    .main-nav {
+      background: var(--header-bg);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-section img {
+      height: 50px;
+      width: auto;
+    }
+
+    .logo-section h2 {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      color: var(--primary-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 25px;
+      padding: 0.5rem 1rem;
+      margin: 0 1rem;
+    }
+
+    .search-bar input {
+      border: none;
+      outline: none;
+      background: none;
+      padding: 0.5rem;
+      width: 200px;
+    }
+
+    .search-bar button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    .nav-icons {
+  display: flex;
+      gap: 1rem;
+  align-items: center;
+    }
+
+    .nav-icon {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .nav-icon:hover {
+      color: var(--secondary-color);
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    /* Mobile Menu Styles */
+    @media (max-width: 1024px) {
+      .top-bar {
+        display: none;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--header-bg);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+  width: 100%;
+        text-align: center;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .search-bar {
+        display: none;
+      }
+
+      .search-bar.active {
+        display: flex;
+        width: 100%;
+        margin: 1rem 0;
+      }
+
+      .search-bar input {
+        width: 100%;
+      }
+    }
+
+    /* Section Styles */
+    .section {
+      padding: clamp(1rem, 5vw, 3rem);
+    }
+
+    .section h1 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+  text-align: center;
+      margin-bottom: 2rem;
+      color: var(--primary-color);
+    }
+
+    /* Book Grid Styles */
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1.5rem;
+  padding: 1rem;
+    }
+
+    .book {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .book:hover {
+      transform: translateY(-5px);
+    }
+
+    .book img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .book-title {
+      padding: 1rem;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      text-align: center;
+    }
+
+    .book button {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .book button:hover {
+      background: var(--secondary-color);
+    }
+
+    /* About Section Styles */
+.about-container {
+  display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+      padding: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .about-container {
+        grid-template-columns: 1fr 1fr;
+      }
+}
+
+.about-image img {
+      width: 100%;
+      height: auto;
+  border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .about-content {
+      padding: 1rem;
+    }
+
+    /* Features Grid */
+.features {
+  display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+    .feature {
+  text-align: center;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+    /* Contact Section */
+.contact-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+      background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+.platform-icon img {
+  width: 50px;
+  height: 50px;
+}
+
+.social-button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background: #8e6e95;
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.instagram-card { border-left: 4px solid #E1306C; }
+.whatsapp-card { border-left: 4px solid #25D366; }
+.tiktok-card { border -left: 4px solid #25F4EE; }
+    /* Popup Styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .popup-content {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @media (min-width: 768px) {
+      .popup-content {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 2rem;
+        padding: 2rem;
+      }
+    }
+
+    .popup-image img {
+  width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .popup-details {
+      padding: 1rem 0;
+    }
+
+    /* Footer Styles */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--header-bg);
+      margin-top: 3rem;
+    }
+
+    /* Responsive Typography */
+    @media (max-width: 768px) {
+      .popup-title {
+        font-size: 1.5rem;
+      }
+      
+      .popup-author {
+        font-size: 1rem;
+      }
+      
+      .popup-desc {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Add these styles in the style section */
+    .cart-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+      right: 0;
+  width: 100%;
+      max-width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1001;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .cart-header {
+  display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-header h3 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+
+    .cart-items {
+      padding: 1rem 0;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+    .cart-item-author {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-item-price {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .remove-item {
+      color: #ff4444;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .cart-total {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--border-color);
+      text-align: right;
+    }
+
+    .cart-total p {
+      font-size: 1.2rem;
+  font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary-color);
+  color: white;
+  border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+  cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background: var(--secondary-color);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .cart-icon-wrapper {
+      position: relative;
+    }
+
+    /* Add these new styles in the style section */
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(100%);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+    }
+
+    .cart-popup {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .cart-popup.closing {
+      animation: slideOut 0.3s ease-out;
+    }
+
+    .cart-item {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .cart-item.removing {
+      animation: fadeOut 0.3s ease-out;
+    }
+
+    .save-for-later {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .save-for-later h4 {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .saved-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--background-color);
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .saved-item:hover {
+      transform: translateX(5px);
+    }
+
+    .saved-item img {
+      width: 60px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .saved-item-details {
+      flex: 1;
+    }
+
+    .saved-item-title {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .saved-item-author {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .saved-item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .saved-item-actions button {
+      padding: 0.25rem 0.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+    .move-to-cart {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .remove-saved {
+      background: #ff4444;
+      color: white;
+    }
+
+    /* Update the cart popup HTML structure */
+    <div class="cart-popup">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button class="close-cart">&times;</button>
+      </div>
+      <div class="cart-items">
+        <!-- Cart items will be dynamically added here -->
+      </div>
+      <div class="cart-total">
+        <p>Total: $<span id="cart-total-amount">0.00</span></p>
+      </div>
+      <button class="checkout-btn">Proceed to Checkout</button>
+      
+      <div class="save-for-later">
+        <h4>Saved for Later</h4>
+        <div class="saved-items">
+          <!-- Saved items will be dynamically added here -->
+        </div>
+      </div>
+    </div>
+
+    /* Add these styles in the style section */
+    .hero-section {
+      padding: 2rem 1rem;
+      background: var(--background-color);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-item {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      aspect-ratio: 16/9;
+    }
+
+    .hero-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .hero-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .hero-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      color: white;
+    }
+
+    .hero-content h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-content p {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      opacity: 0.9;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      margin-top: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .hero-cta:hover {
+      background: var(--secondary-color);
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-item {
+        aspect-ratio: 3/2;
+      }
+    }
+
+    /* Hero Slider Styles */
+    .hero-slider {
+      position: relative;
+      width: 100%;
+      height: 55vh;
+      min-height: 320px;
+      max-height: 500px;
+      overflow: hidden;
+      background: #f7f4ef;
+      z-index: 2;
+    }
+    .hero-slides {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-slide {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6);
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1;
+    }
+    .hero-slide-text {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      animation: fadeInUp 1s;
+    }
+    .hero-slide-text h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .hero-slide-text p {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+    .hero-slider-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.7rem;
+      z-index: 3;
+    }
+    .hero-slider-dots .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.5;
+      cursor: pointer;
+      transition: opacity 0.3s, background 0.3s;
+      border: 2px solid #6d466b;
+    }
+    .hero-slider-dots .dot.active {
+      opacity: 1;
+      background: #6d466b;
+    }
+    @media (max-width: 768px) {
+      .hero-slider {
+        height: 32vh;
+        min-height: 180px;
+      }
+      .hero-slide-text {
+        padding: 1rem 0.5rem;
+      }
+      .hero-slide-text h1 {
+        font-size: 1.2rem;
+      }
+      .hero-slide-text p {
+        font-size: 0.95rem;
+      }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Professional Footer Styles */
+    .custom-footer {
+      background: #232946;
+      color: #f4f4f4;
+      padding: 3rem 1rem 1rem 1rem;
+      margin-top: 3rem;
+      font-family: 'Poppins', 'Georgia', serif;
+    }
+    .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 2rem;
+    }
+    .footer-brand {
+      flex: 1 1 250px;
+      min-width: 220px;
+    }
+    .footer-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+    .footer-brand h2 {
+      color: #eebbc3;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .footer-brand p {
+      color: #b8c1ec;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      flex: 1 1 180px;
+      min-width: 180px;
+    }
+    .footer-links h3 {
+      color: #eebbc3;
+      margin-bottom: 0.7rem;
+      font-size: 1.1rem;
+    }
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-links ul li {
+      margin-bottom: 0.5rem;
+    }
+    .footer-links ul li a {
+      color: #b8c1ec;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links ul li a:hover {
+      color: #eebbc3;
+      text-decoration: underline;
+    }
+    .footer-contact {
+      flex: 1 1 220px;
+      min-width: 200px;
+    }
+    .footer-contact h3 {
+      color: #eebbc3;
+      margin-bottom: 0.7rem;
+      font-size: 1.1rem;
+    }
+    .footer-contact ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+    .footer-contact ul li {
+      margin-bottom: 0.5rem;
+      color: #b8c1ec;
+      font-size: 1rem;
+    }
+    .footer-contact ul li i {
+      margin-right: 0.5rem;
+      color: #eebbc3;
+    }
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .footer-social a {
+      color: #eebbc3;
+      font-size: 1.3rem;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover {
+      color: #b8c1ec;
+    }
+    .footer-bottom {
+      text-align: center;
+      color: #b8c1ec;
+      font-size: 0.95rem;
+      margin-top: 2rem;
+      border-top: 1px solid #393e5c;
+      padding-top: 1rem;
+    }
+    @media (max-width: 900px) {
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2.5rem;
+      }
+      .footer-brand, .footer-links, .footer-contact {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <style>
+  .scrolling-banner {
+    display: flex;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: rgb(26, 26, 26);
+    color: rgb(255, 255, 255);
+  }
+
+  .scrolling-text {
+    display: inline-block;
+    padding-right: 2rem;
+    animation: scroll-left 10s linear infinite;
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .shape-circle {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 8px;
+    background-color: #fff;
+    border-radius: 50%;
+  }
+</style>
+
+<div class="scrolling-banner">
+  <div class="scrolling-text">
+    Nourish Your Mind <span class="shape-circle"></span>
+    Nourish Your Mind <span class="shape-circle"></span>
+    Nourish Your Mind <span class="shape-circle"></span>
+    Nourish Your Mind <span class="shape-circle"></span>
+    Nourish Your Mind <span class="shape-circle"></span>
+  </div>
+</div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <div class="top-bar-item">
+        <i class="fas fa-phone"></i>
+        <span>+254 740 891 367</span>
+      </div>
+      <div class="top-bar-item">
+        <i class="fas fa-envelope"></i>
+        <span>info@inkaura.com</span>
+      </div>
+      <div class="top-bar-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Nairobi, Kenya</span>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+
+  <!-- Main Navigation -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <div class="logo-section">
+    <img src="WhatsApp Image 2025-04-29 at 08.42.26_85e83c1c.jpg" alt="InkAura Logo">
+    <h2>InkAura Bookstore</h2>
+      </div>
+
+      <div class="nav-links">
+        <a href="#new-arrivals" class="active">New Arrivals</a>
+        <a href="#quran">Quran</a>
+    <a href="#islamic">Islamic Books</a>
+    <a href="#somali">Somali Books</a>
+        <a href="#romance">Romance</a>
+        <a href="#self-help">Self Help</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" placeholder="Search books...">
+        <button><i class="fas fa-search"></i></button>
+      </div>
+
+      <div class="nav-icons">
+        <i class="fas fa-heart nav-icon"></i>
+        <div class="cart-icon-wrapper">
+          <i class="fas fa-shopping-cart nav-icon" id="cart-icon"></i>
+          <span class="cart-count">0</span>
+        </div>
+        <div class="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Slider -->
+  <section class="hero-slider">
+    <div class="hero-slides">
+      <div class="hero-slide active">
+        <img src="images/LIBRARY 1.jpg" alt="Bookstore 1">
+        <div class="hero-slide-text">
+          <h1>Discover New Arrivals</h1>
+          <p>Fresh stories, every week. Dive in!</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="images/LIB 2.jpg" alt="Bookstore 2">
+        <div class="hero-slide-text">
+          <h1>Islamic & Somali Books</h1>
+          <p>Curated for your spiritual and cultural journey.</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="images/LIBR 3.avif" alt="Bookstore 3">
+        <div class="hero-slide-text">
+          <h1>Self-Help Bestsellers</h1>
+          <p>Transform your life, one page at a time.</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="images/LIB 5.avif" alt="Bookstore 4">
+        <div class="hero-slide-text">
+          <h1>Romance & Fiction</h1>
+          <p>Fall in love with every story.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slider-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <!-- Add this HTML right after the nav section -->
+  <div class="cart-popup">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="close-cart">&times;</button>
+    </div>
+    <div class="cart-items">
+      <!-- Cart items will be dynamically added here -->
+    </div>
+    <div class="cart-total">
+      <p>Total: $<span id="cart-total-amount">0.00</span></p>
+    </div>
+    <button class="checkout-btn">Proceed to Checkout</button>
+    
+    <div class="save-for-later">
+      <h4>Saved for Later</h4>
+      <div class="saved-items">
+        <!-- Saved items will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Your EXISTING sections - only need to add 'category-header' class -->
+   <!-- Book Details Popup -->
+  <div id="bookPopup" class="popup">
+    <div class="popup-content">
+      <span class="close-btn">&times;</span>
+      <div class="popup-image">
+        <img id="popupBookImage" src="" alt="Book Cover">
+      </div>
+      <div class="popup-details">
+        <h2 id="popupBookTitle" class="popup-title">Book Title</h2>
+        <p id="popupBookAuthor" class="popup-author">By <span>Author Name</span></p>
+        <p id="popupBookDesc" class="popup-desc">Book description will appear here...</p>
+        <p id="popupBookprice" class="popup-price">price: <span>$0.00</span></p>
+        <button id="popupOrderBtn" class="popup-btn">Order Now</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <section id="about" class="section">
+    
+    
+    
+    
+      
+  <div class="about-content">
+    <h1>Welcome to InkAura Bookshop <span class="online-badge">ONLINE</span></h1>
+    <p class="tagline">Where stories come to life, one click at a time ✨</p>
+    
+    <div class="about-text">
+      <p>InkAura is your <strong>premium online bookstore</strong> specializing in Islamic literature, Somali titles, and transformative self-help books. We bring the magic of physical bookshops to your digital doorstep.</p>
+      
+      <div class="features">
+        <div class="feature">
+          <span>📦</span>
+          <p>Nationwide delivery</p>
+        </div>
+        <div class="feature">
+          <span>📚</span>
+          <p>Curated collections</p>
+        </div>
+        <div class="feature">
+          <span>💻</span>
+          <p>24/7 online access</p>
+        </div>
+      </div>
+      
+      <blockquote>
+        "Books are the plane, and the train, and the road. They are the destination, and the journey. They are home."
+        <cite>- Anna Quindlen</cite>
+      </blockquote>
+    </div>
+  </div>
+</div>
+</section>
+
+
+
+
+  <section id="islamic" class="section">
+    <h1>Islamic Books </h1>
+    <div class="book-grid">
+      <div class="book">
+        <img src="51Hg8l--7jL._AC_UF1000,1000_QL80_.jpg" alt="The Message from Quran">
+        <div class="book-title">Message from Quran</div>
+        <button onclick="alert('Order placed for message from Quran')">Order</button>
+      </div>
+      <div class="book">
+        <img src="51HSz9R-ZhL._SY445_SX342_.jpg" alt="Reclaim Your Heart">
+        <div class="book-title">Reclaim Your Heart – Yasmin Mogahed</div>
+        <button onclick="alert('Order placed for Reclaim Your Heart')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.23_02c8cce8.jpg">
+        <div class="book-title">productive muslim</div>
+        <button onclick="alert('Order placed for productive muslim')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.25_08e4722e.jpg" alt="Allah loves">
+        <div class="book-title">Allah loves</div>
+        <button onclick="alert('Order placed for Allah loves')">Order</button>
+      </div>
+      <div class="book">
+        <img src="content.jpeg" alt="Don't Be Sad">
+        <div class="book-title">Don't Be Sad – Aid al-Qarni</div>
+        <button onclick="alert('Order placed for Don\'t Be Sad')">Order</button>
+      </div>
+      <div class="book">
+        <img src="81GgLScGwkL._SL1500_.jpg" alt="The Sealed Nectar">
+        <div class="book-title">The Sealed Nectar – Safiur Rahman</div>
+        <button onclick="alert('Order placed for The Sealed Nectar')">Order</button>
+      </div>
+      <div class="book">
+        <img src="images.jpeg" alt="The Message from prophets">
+        <div class="book-title">The Message from prophets</div>
+        <button onclick="alert('Order placed for The Message from prophets')">Order</button>
+      </div>
+      <div class="book">
+        <img src="51jmYX1wpzL._SL1500_.jpg" alt="The Message from swahaba">
+        <div class="book-title">Message from from swahaba</div>
+        <button onclick="alert('Order placed for message from from swahaba')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.26_44f59587.jpg" alt="ideal muslim">
+        <div class="book-title">ideal muslim</div>
+        <button onclick="alert('Order placed for ideal muslim')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.23_e76fc4c1.jpg" alt="TIMELESS SEED OF ADVICE ">
+        <div class="book-title">TIMELESS SEED OF ADVICE </div>
+        <button onclick="alert('Order placed for Timeless seed of advice')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.24_580de65a.jpg" alt="ideal muslimah">
+        <div class="book-title">ideal muslimah</div>
+        <button onclick="alert('Order placed for ideal muslimah')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.25_ef0968cb.jpg" alt="Heart to heart with my sister">
+        <div class="book-title">Heart to heart with my sister</div>
+        <button onclick="alert('Order placed for Heart to heart with my sister')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.24_72f61cf7.jpg" alt="Metting Muhamad p.b.u.h">
+        <div class="book-title">Metting Muhamad p.b.u.h</div>
+        <button onclick="alert('Order placed for Metting Muhamad p.b.u.h')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.25_9050b8d5.jpg" alt="The wealth of women">
+        <div class="book-title">The wealth of women</div>
+        <button onclick="alert('Order placed for The wealth of women')">Order</button>
+      </div>
+     <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.23_5d57e163.jpg" alt="Now your Mother">
+        <div class="book-title">Now your ARE Mother</div>
+         <button onclick="alert('Order placed for Now your Mother')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 14.56.25_abfcbb44.jpg" alt="A muslim Woman diary">
+        <div class="book-title">A muslim Woman diary</div>
+        <button onclick="alert('Order placed for A muslim Woman diary')">Order</button>
+      </div>
+    
+
+    </div>
+    
+  </section>
+
+  <section id="somali" class="section">
+    <h1>Somali Books</h1>
+    <div class="book-grid">
+      <div class="book">
+        <img src="TikVideo.App_7456435403050978565_1.jpeg" alt="waxaad tahay saxabiyad">
+        <div class="book-title">waxad tahay saxabiyad</div>
+        <button onclick="alert('Order placed for waxaad tahay saxabiyad')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 13.02.44_271b0a8f.jpg" alt="ha weynaanin Aabbe">
+        <div class="book-title">ha weynaanin Aabbe</div>
+        <button onclick="alert('Order placed for ha weynaanin Aabbe')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.02_ee179770.jpg" alt="Mucjisada Aroortii">
+        <div class="book-title">Mucjisada Aroortii</div>
+        <button onclick="alert('Order placed for Mucjisada Aroortii')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.03_57a9667c.jpg" alt="furaha fahanka Quranka">
+        <div class="book-title">furaha fahanka Quranka</div>
+        <button onclick="alert('Order placed for furaha fahanka Quranka')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.04_4aa459d2.jpg">
+        <div class="book-title">Dhambaallada quranka</div>
+        <button onclick="alert('Order placed for Dhambaallada quranka')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.03_57a9667c.jpg" alt="casariye">
+        <div class="book-title">casariye</div>
+        <button onclick="alert('Order placed for casariye')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.03_564bf503.jpg" alt="Naftaydaay Gacalo">
+        <div class="book-title">Naftaydaay Gacalo</div>
+        <button onclick="alert('Order placed for Naftaydaay Gacalo')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.04_dec83ec7.jpg" alt="Salaad Baa i dhaaftay!">
+        <div class="book-title">Salaad Baa i dhaaftay!</div>
+        <button onclick="alert('Order placed for Salaad Baa i dhaaftay!')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.02_e0cac759.jpg" alt="Dabadeed Qofna Ma hadhin">
+        <div class="book-title">Dabadeed Qofna Ma hadhin</div>
+        <button onclick="alert('Order placed forDabadeed Qofna Ma hadhin')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.30.00_3a72b832.jpg" alt="Jiraalkay 1">
+        <div class="book-title">Jiraalkay 1</div>
+        <button onclick="alert('Order placed for Jiraalkay 1')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.34.39_df6f3670.jpg" alt="Jiraalkay 2">
+        <div class="book-title">Jiraalkay 2</div>
+        <button onclick="alert('Order placed for Jiraalkay 2')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.34.39_df6f3670.jpg" alt="Jiraalkay 3">
+        <div class="book-title">Jiraalkay 3</div>
+        <button onclick="alert('Order placed for Jiraalkay 3')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.03_a03b658f.jpg" alt="Ismalure">
+        <div class="book-title">Ismalure</div>
+        <button onclick="alert('Order placed for Ismalure')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.01_874b5247.jpg" alt="Faca koraya">
+        <div class="book-title">Faca koraya</div>
+        <button onclick="alert('Order placed for Faca koraya')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.01_466c7bae.jpg" alt="Qoraallada Mucaashaqiinta ">
+        <div class="book-title">Qoraallada Mucaashaqiinta</div>
+        <button onclick="alert('Order placed for Qoraallada Mucaashaqiinta')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 11.42.03_d699d792.jpg" alt="Waan kusaalamay saaxiib">
+        <div class="book-title">Waan kusaalamay saaxiib</div>
+        <button onclick="alert('Order placed for Waan kusaalamay saaxiib')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 13.05.10_0ac3c998.jpg" alt="Ragga oo Keliya">
+        <div class="book-title">Ragga oo Keliya</div>
+        <button onclick="alert('Order placed for Ragga oo Keliya')">Order</button>
+      </div>
+    </div>
+  </section>
+  <section id="SelfHelp" class="section">
+    <h1>Self-Help Books (Bestsellers)</h1>
+    <div class="book-grid">
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/91bYsX41DVL.jpg" alt="Atomic Habits">
+        <div class="book-title">Atomic Habits – James Clear</div>
+        <button onclick="alert('Order placed for Atomic Habits')">Order</button>
+      </div>
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/71QKQ9mwV7L.jpg" alt="SUBTLE OF NOT GIVING FUCK">
+        <div class="book-title">SUBTLE OF NOT GIVING FUCK</div>
+        <button onclick="alert('Order placed for SUBTLE OF NOT GIVING FUCK')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.05_bafb08f4.jpg" alt="Do it today">
+        <div class="book-title">Do it today</div>
+        <button onclick="alert('Order placed for Do it today')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.00_a952b870.jpg" alt="How to win friend and influence people">
+        <div class="book-title">How to win friend and influence people</div>
+        <button onclick="alert('Order placed for How to win friend and influence people')">Order</button>
+      </div>
+      <div class="book">
+        <img src="images.jpeg" alt="How to talk to anyone ">
+        <div class="book-title">The Alchemist – Paulo Coelho</div>
+        <button onclick="alert('Order placed for The Alchemist')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.02_301597b0.jpg" alt="Psychology of Money">
+        <div class="book-title">Psychology of Money</div>
+        <button onclick="alert('Order placed for Psychology of Money')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.03_18a07464.jpg" alt="48 laws of power">
+        <div class="book-title">48 laws of power</div>
+        <button onclick="alert('Order placed for 48 laws of power')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.00_78765187.jpg" alt="the law of HUman nature">
+        <div class="book-title">the law of HUman nature</div>
+        <button onclick="alert('Order placed for the law of HUman nature')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.02_1de81f24.jpg" alt="The mountain is you">
+        <div class="book-title">The mountain is you</div>
+        <button onclick="alert('Order placed for The mountain is you')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.04_103c4228.jpg" alt="Art of Seduction">
+        <div class="book-title">Art of Seduction</div>
+        <button onclick="alert('Order placed for Art of Seduction')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.00_845d5f96.jpg" alt="101 Essays tht will change the way you think">
+        <div class="book-title">101 Essays tht will change the way you think</div>
+        <button onclick="alert('Order placed for 101 Essays tht will change the way you think')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.03_7022a0df.jpg" alt="As long as the lemon trees Grow">
+        <div class="book-title">As long as the lemon trees Grow</div>
+        <button onclick="alert('Order placed for As long as the lemon Grow')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.03_f57c3b95.jpg" alt="Ego is the enemy">
+        <div class="book-title">Ego is the enemy</div>
+        <button onclick="alert('Order placed for Ego is the enemy')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.02_b110743b.jpg" alt="Think and grow rich">
+        <div class="book-title">Think and grow rich</div>
+        <button onclick="alert('Order placed for Think and grow rich')">Order</button>
+       </div>
+       <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.02_446c65d2.jpg" alt="can't hurt me">
+        <div class="book-title">can't hurt me</div>
+        <button onclick="alert('Order placed for cant hurt me')">Order</button>
+       </div>
+       <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 12.48.03_a2a430c7.jpg" alt="Sorrounded by idiot">
+        <div class="book-title">Sorrounded by idiot</div>
+        <button onclick="alert('Order placed for Sorrounded by idiot')">Order</button>
+       </div>
+
+      
+
+    </div>
+  </section>
+  <section id="Romance" class="section">
+    <h1>Romance & Fiction</h1>
+    <div class="book-grid">
+      <div class="book">
+        <img src="https://m.media-amazon.com/images/I/81s0B6NYXML.jpg" alt="It Ends With Us">
+        <div class="book-title">It Ends With Us – Colleen Hoover</div>
+        <button onclick="alert('Order placed for It Ends With Us')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.24_d5a8c2ad.jpg" alt="it start with us ">
+        <div class="book-title">it start with us</div>
+        <button onclick="alert('Order placed for it start with us')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.18_16e33a43.jpg" alt="Twisted love  ">
+        <div class="book-title">Twisted love </div>
+        <button onclick="alert('Order placed for Twisted love ')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.18_3d8d8165.jpg" alt="Twisted hate  ">
+        <div class="book-title">Twisted hate </div>
+        <button onclick="alert('Order placed for Twisted hate ')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.22_cd5c424d.jpg" alt="Twisted game  ">
+        <div class="book-title">Twisted game </div>
+        <button onclick="alert('Order placed for Twisted game ')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.20_9562fb0f.jpg" alt="Twisted lies ">
+        <div class="book-title">Twisted lies</div>
+        <button onclick="alert('Order placed for Twisted lies')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.22_546b8c5c.jpg" alt="king of pride ">
+        <div class="book-title">king of pride</div>
+        <button onclick="alert('Order placed for king of pride')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.18_c4f01b24.jpg" alt="king of wrath">
+        <div class="book-title">king of wrath</div>
+        <button onclick="alert('Order placed for king of wrath')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.20_d8dc9e63.jpg" alt="king of Greed ">
+        <div class="book-title">king of Greed</div>
+        <button onclick="alert('Order placed for king of Greed')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.20_a80ed065.jpg" alt="king of sloth ">
+        <div class="book-title">king of sloth</div>
+        <button onclick="alert('Order placed for king of Sloth')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.21_86b452fa.jpg" alt="Ugly love ">
+        <div class="book-title">Ugly love</div>
+        <button onclick="alert('Order placed for ugly love')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.23_2f2e1612.jpg" alt="maybe some day">
+        <div class="book-title">maybe some day</div>
+        <button onclick="alert('Order placed for maybe some day')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.24_b66865c1.jpg" alt="confess ">
+        <div class="book-title">confess</div>
+        <button onclick="alert('Order placed for confess')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.23_de29c8b2.jpg" alt="november 9">
+        <div class="book-title">november 9</div>
+        <button onclick="alert('Order placed for november9')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.25_ac5967de.jpg" alt="Love hypothesis">
+        <div class="book-title">Love hypothesis</div>
+        <button onclick="alert('Order placed for Love hypothesis')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.25_140daf5a.jpg" alt="love from A to Z">
+        <div class="book-title">love from A to Z</div>
+        <button onclick="alert('Order placed forlove from A to Z')">Order</button>
+      </div>
+      <div class="book">
+        <img src="WhatsApp Image 2025-04-29 at 15.15.23_197843d3.jpg" alt="love from Makkah to Medina">
+        <div class="book-title">love from Makkah to Madina</div>
+        <button onclick="alert('Order placed forlove from Makkahto Medina')">Order</button>
+      </div>
+    </section>
+      
+    <section id="about" class="section">
+      <div class="about-container">
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1535905557558-afc4877a26fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Cozy Bookstore">
+        </div>
+        
+        <div class="about-content">
+          <h1>Welcome to InkAura Bookshop <span class="online-badge">ONLINE</span></h1>
+          <p class="tagline">Where stories come to life, one click at a time ✨</p>
+          
+          <div class="about-text">
+            <p>InkAura is your <strong>premium online bookstore</strong> specializing in Islamic literature, Somali titles, and transformative self-help books. We bring the magic of physical bookshops to your digital doorstep.</p>
+            
+            <div class="features">
+              <div class="feature">
+                <span>📦</span>
+                <p>Nationwide delivery</p>
+              </div>
+              <div class="feature">
+                <span>📚</span>
+                <p>Curated collections</p>
+              </div>
+              <div class="feature">
+                <span>💻</span>
+                <p>24/7 online access</p>
+              </div>
+            </div>
+            
+            <blockquote>
+              "Books are the plane, and the train, and the road. They are the destination, and the journey. They are home."
+              <cite>- Anna Quindlen</cite>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="contact" class="section">
+      <h1>Let's Connect <span class="subtitle">We reply in 24h</span></h1>
+      
+      <div class="contact-cards">
+        <!-- Instagram -->
+        <div class="contact-card instagram-card">
+          <div class="platform-icon">
+            
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+          </div>
+          <div class="platform-info">
+            <h3>Instagram</h3>
+            <p>@InkAurabookstore</p>
+            <a href="https://instagram.com/inkaurabookstore" target="_blank" class="social-button">DM Us</a>
+          </div>
+        </div>
+        <!-- TikTok -->
+    <div class="contact-card tiktok-card">
+      <div class="platform-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" alt="TikTok">
+      </div>
+      <div class="platform-info">
+        <h3>TikTok</h3>
+        <p>@inkaura.bookstore</p>
+        <a href="https://www.tiktok.com/@inkaura.bookstore?_t=ZM-8vxamt5d7B7&_r=1" target="_blank" class="social-button">Follow Us</a>
+      </div>
+    </div>
+        <!-- WhatsApp -->
+        <div class="contact-card whatsapp-card">
+          <div class="platform-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp">
+          </div>
+          <div class="platform-info">
+            <h3>WhatsApp</h3>
+            <p>+254740891367</p>
+            <a href="https://wa.me/254740891367" target="_blank" class="social-button">Chat Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      
+
+      
+
+      
+
+
+      
+
+    
+
+  <!-- Professional Footer Start -->
+  <footer class="custom-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="WhatsApp Image 2025-04-29 at 08.42.26_85e83c1c.jpg" alt="InkAura Logo" class="footer-logo">
+        <h2>InkAura Bookstore</h2>
+        <p>Your trusted source for Islamic, Somali, and Self-Help books. Nourish your mind, one page at a time.</p>
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#islamic">Islamic Books</a></li>
+          <li><a href="#somali">Somali Books</a></li>
+          <li><a href="#SelfHelp">Self-Help</a></li>
+          <li><a href="#Romance">Romance</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h3>Contact</h3>
+        <ul>
+          <li><i class="fas fa-phone"></i> +254 740 891 367</li>
+          <li><i class="fas fa-envelope"></i> info@inkaura.com</li>
+          <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+        </ul>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+    &copy; 2025 InkAura Bookstore. All rights reserved.
+    </div>
+    </footer>
+  <!-- Professional Footer End -->
+
+  <style>
+  .custom-footer {
+    background: #232946;
+    color: #f4f4f4;
+    padding: 3rem 1rem 1rem 1rem;
+    margin-top: 3rem;
+    font-family: 'Poppins', 'Georgia', serif;
+  }
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+  }
+  .footer-brand {
+    flex: 1 1 250px;
+    min-width: 220px;
+  }
+  .footer-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+  .footer-brand h2 {
+    color: #eebbc3;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .footer-brand p {
+    color: #b8c1ec;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .footer-links {
+    flex: 1 1 180px;
+    min-width: 180px;
+  }
+  .footer-links h3 {
+    color: #eebbc3;
+    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+  }
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-links ul li {
+    margin-bottom: 0.5rem;
+  }
+  .footer-links ul li a {
+    color: #b8c1ec;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links ul li a:hover {
+    color: #eebbc3;
+    text-decoration: underline;
+  }
+  .footer-contact {
+    flex: 1 1 220px;
+    min-width: 200px;
+  }
+  .footer-contact h3 {
+    color: #eebbc3;
+    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+  }
+  .footer-contact ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+  .footer-contact ul li {
+    margin-bottom: 0.5rem;
+    color: #b8c1ec;
+    font-size: 1rem;
+  }
+  .footer-contact ul li i {
+    margin-right: 0.5rem;
+    color: #eebbc3;
+  }
+  .footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .footer-social a {
+    color: #eebbc3;
+    font-size: 1.3rem;
+    transition: color 0.2s;
+  }
+  .footer-social a:hover {
+    color: #b8c1ec;
+  }
+  .footer-bottom {
+    text-align: center;
+    color: #b8c1ec;
+    font-size: 0.95rem;
+    margin-top: 2rem;
+    border-top: 1px solid #393e5c;
+    padding-top: 1rem;
+  }
+  @media (max-width: 900px) {
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2.5rem;
+    }
+    .footer-brand, .footer-links, .footer-contact {
+      min-width: 0;
+      width: 100%;
+    }
+  }
+  </style>
+
+    <script>
+      // Complete Book Database with ALL your books
+      const bookData = {
+        // Islamic Books
+        "Message from Quran": {
+          author: "AD'HAM SHARQAAWI",
+          desc:  "You set out to sin. Suddenly, a funeral passes by you — and you hold back.\nYour strength tempts you with weak injustice. You become ill. And you think you have lost confidence in people, leaving you disappointed.\n\nNext, you learn a lesson: when you sin, your chest feels constricted. You then hear a verse that cheers you up. You are confused. A Prophetic Hadith, then, guides you. And everything is clear now.\n\n\"We hear, and we obey.\" [Surah Al-Baqarah, 2:285]\n\nSuch are the Messages from Allah. Following its title, Messages from the Qur'an is for all who believe in Allah, the Highest, Who will always reach out to us.\n\nIndeed, to Him, we do return.",
+          price: "price coming soon",
+          image: "51Hg8l--7jL._AC_UF1000,1000_QL80_.jpg"
+        },
+        "Reclaim Your Heart – Yasmin Mogahed": {
+          author: "Yasmin Mogahed",
+          desc: "Reclaim Your Heart is not just a self-help book. It is a manual about the journey of the heart in and out of the ocean of this life. It is a book about how to keep your heart from sinking to the depths of that ocean, and what to do when it does. It is a book about redemption, about hope, about renewal. Every heart can heal, and each moment is created to bring us closer to that transformative return.\n\nReclaim Your Heart is about finding that moment when everything stops and suddenly looks different. It is about finding your own awakening. And then returning to the better, truer, and freer version of yourself.\n\nMany of us live our lives, entrapped by the same repeated patterns of heartbreak and disappointment. Many of us have no idea why this happens. Reclaim Your Heart is about freeing.",
+
+          price: "price coming soon",
+          image: "51HSz9R-ZhL._SY445_SX342_.jpg"
+        },
+        "productive muslim": {
+          author: "Mohammed Faris",
+          desc: "Islamic productivity guide for modern Muslims balancing deen and dunya.",
+          price: "price coming soon",
+          image: "WhatsApp Image 2025-04-29 at 14.56.23_02c8cce8.jpg"
+        },
+        "Allah loves": {
+          author: "Omar Suleiman",
+          desc: "Exploring the beautiful names and attributes of Allah that reflect His love.",
+          price: "price coming soon",
+          image: "WhatsApp Image 2025-04-29 at 14.56.25_08e4722e.jpg"
+        },
+        "Don't Be Sad – Aid al-Qarni": {
+          author: "Aid al-Qarni",
+          desc: "Islamic wisdom for overcoming life's difficulties with patience and faith.",
+          price: "price coming soon",
+          image: "content.jpeg"
+        },
+        "The Sealed Nectar – Safiur Rahman": {
+          author: "Safiur Rahman",
+          desc: "Comprehensive biography of Prophet Muhammad (PBUH) and his noble life.",
+          price: "price coming soon",
+          image: "81GgLScGwkL._SL1500_.jpg"
+        },
+        "The Message from prophets": {
+          author: "Ad'ham sharqaawi",
+          desc: "Lessons and wisdom from the stories of prophets in the Quran.",
+          price: "price coming soon",
+          image: "images.jpeg"
+        },
+        "Message from from swahaba": {
+          author: "Ad'ham sharqaawi",
+          desc: "Inspirational stories and lessons from the companions of the Prophet.",
+          price: "$14.99",
+          image: "51jmYX1wpzL._SL1500_.jpg"
+        },
+        "ideal muslim": {
+          author: "Dr. Muhammad Ali al-Hashimi",
+          desc: "Complete guide to Islamic character and manners for men.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.26_44f59587.jpg"
+        },
+        "TIMELESS SEED OF ADVICE": {
+          author: "B.B ABDALLA",
+          desc: "Classic Islamic wisdom for spiritual growth and purification.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.23_e76fc4c1.jpg"
+        },
+        "ideal muslimah": {
+          author: "Dr. Muhammad Ali al-Hashimi",
+          desc: "Complete guide to Islamic character and manners for women.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.24_580de65a.jpg"
+        },
+        "Heart to heart with my sister": {
+          author: "Umm Zakiyyah",
+          desc: "Islamic advice for Muslim women on faith, marriage and personal growth.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.25_ef0968cb.jpg"
+        },
+        "Metting Muhamad p.b.u.h": {
+          author: "Imam Omar Suleiman",
+          desc: "Experience the Prophet's character and teachings as if you met him.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.24_72f61cf7.jpg"
+        },
+        "The wealth of women": {
+          author: "Umm Abdurrahman Sakina Hirschfelder",
+          desc: "Islamic perspective on the true value and rights of women in Islam.",
+          price: "Ad'ham sharqaawi",
+          image: "WhatsApp Image 2025-04-29 at 15.15.25_9050b8d5.jpg"
+        },
+        "Now your ARE Mother": {
+          author: "Various Authors",
+          desc: "Islamic guidance for new mothers on parenting and child-rearing.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.23_5d57e163.jpg"
+        },
+        "A muslim Woman diary": {
+          author: "Umm Zakiyyah",
+          desc: "Personal reflections and Islamic advice for Muslim women's daily life.",
+          price: "NOT YET",
+          image: "WhatsApp Image 2025-04-29 at 14.56.25_abfcbb44.jpg"
+        },
+  
+        // Somali Books
+        "waxad tahay saxabiyad": {
+          author: "Aadham Sharqaawi",
+          desc: "...........",
+          price: ".......",
+          image: "TikVideo.App_7456435403050978565_1.jpeg"
+        },
+        "ha weynaanin Aabbe": {
+          author: "Aadan Sahan",
+          desc: "..........",
+          price: ".......",
+          image: "WhatsApp Image 2025-04-29 at 13.02.44_271b0a8f.jpg"
+        },
+        "Mucjisada Aroortii": {
+          author: "Hal Erod ,Tarjume Maxamed ",
+          desc: "Waa maxay muhiimadda buuggan?1.Wuxuu kaa caawinayaa inaad maalinta si niyad leh u bilowdo.2.Waxaad raacaysaa habka SAVERS oo wax ku ool ah:3.Aamusnaan, Caddeyn (Affirmations), Muuqaalayn, Jimicsi, Akhris, Qorid.4.Waxay dhistaa anshax, feejignaan, iyo tamar wanaagsan.5.Waxay kor u qaadaa wax soo saar iyo kobaca naftaada.6.Waa sahlan tahay in la raaco – xitaa haddii ay tahay 6 daqiiqo kaliya maalin kasta.7.Haddii aad beddesho subaxaaga, waad beddelay noloshaada..",
+          price: "........",
+          image: "WhatsApp Image 2025-04-29 at 11.42.02_ee179770.jpg"
+        },
+        "furaha fahanka Quranka": {
+          author: "Somali Scholar",
+          desc: "..............",
+          price: "$12.99",
+          image: "WhatsApp Image 2025-04-29 at 11.42.03_57a9667c.jpg"
+        },
+        "Dhambaallada quranka": {
+          author: "Ad'ham Sharqaawi, tarjume CABDULXAKIM OBSIIYE",
+          desc: ".........",
+          price: "......",
+          image: "WhatsApp Image 2025-04-29 at 11.42.04_4aa459d2.jpg"
+        },
+        "casariye": {
+          author: "Somali Author",
+          desc: "Classic Somali novel about love and cultural traditions.",
+          price: "$10.99",
+          image: "WhatsApp Image 2025-04-29 at 11.42.03_57a9667c.jpg"
+        },
+        "Naftaydaay Gacalo": {
+          author: "ALI DAYUUB, TARJUME MAXAMED QAAMUS",
+          desc: "........",
+          price: ".....",
+          image: "WhatsApp Image 2025-04-29 at 11.42.03_564bf503.jpg"
+        },
+        "Salaad Baa i dhaaftay!": {
+          author: "ISLAM JAMAAL TARJUME: CABDIXAKIN OBSIYE",
+          desc: ".........",
+          price: ".......",
+          image: "WhatsApp Image 2025-04-29 at 11.42.04_dec83ec7.jpg"
+        },
+        "Dabadeed Qofna Ma hadhin": {
+          author: "Somali AuthorAGATHA CRISTAE , TARJUME AADAN SAHAN & JACFAR",
+          desc: ".........",
+          price: "........",
+          image: "WhatsApp Image 2025-04-29 at 11.42.02_e0cac759.jpg"
+        },
+        "Jiraalkay 1": {
+          author: "Somali Author",
+          desc: "First part of popular Somali fiction series about life struggles.",
+          price: "$10.99",
+          image: "WhatsApp Image 2025-04-29 at 11.30.00_3a72b832.jpg"
+        },
+        "Jiraalkay 2": {
+          author: "Somali Author",
+          desc: "Second part of the compelling Somali fiction series.",
+          price: "$10.99",
+          image: "WhatsApp Image 2025-04-29 at 11.34.39_df6f3670.jpg"
+        },
+        "Jiraalkay 3": {
+          author: "Somali Author",
+          desc: "Final part of the gripping Somali fiction trilogy.",
+          price: "$10.99",
+          image: "WhatsApp Image 2025-04-29 at 11.34.39_df6f3670.jpg"
+        },
+        "Ismalure": {
+          author: "Somali Author",
+          desc: "Somali self-help book about personal development and success.",
+          price: "$11.99",
+          image: "WhatsApp Image 2025-04-29 at 11.42.03_a03b658f.jpg"
+        },
+        "Faca koraya": {
+          author: "Somali Author",
+          desc: "Inspirational book about overcoming challenges Somali-style.",
+          price: "$9.99",
+          image: "WhatsApp Image 2025-04-29 at 11.42.01_874b5247.jpg"
+        },
+        "Qoraallada Mucaashaqiinta": {
+          author: "Somali Author",
+          desc: "Collection of romantic Somali love letters and poetry.",
+          price: "$8.99",
+          image: "WhatsApp Image 2025-04-29 at 11.42.01_466c7bae.jpg"
+        },
+        "Waan kusaalamay saaxiib": {
+          author: "Somali Author",
+          desc: "Heartwarming story of friendship and loyalty in Somali culture.",
+          price: "$10.99",
+          image: "WhatsApp Image 2025-04-29 at 11.42.03_d699d792.jpg"
+        },
+        "Ragga oo Keliya": {
+          author: "Somali Author",
+          desc: "Insightful book about Somali masculinity and modern challenges.",
+          price: "$12.99",
+          image: "WhatsApp Image 2025-04-29 at 13.05.10_0ac3c998.jpg"
+        },
+  
+        // Self-Help Books
+        "Atomic Habits – James Clear": {
+          author: "James Clear",
+          desc: "Build good habits and break bad ones with proven strategies.",
+          price: "$16.99",
+          image: "https://m.media-amazon.com/images/I/91bYsX41DVL.jpg"
+        },
+        "SUBTLE OF NOT GIVING FUCK": {
+          author: "Mark Manson",
+          desc: "Counterintuitive approach to living a good life by caring about fewer things.",
+          price: "$13.99",
+          image: "https://m.media-amazon.com/images/I/71QKQ9mwV7L.jpg"
+        },
+        "Do it today": {
+          author: "Darius Foroux",
+          desc: "Overcome procrastination and boost productivity immediately.",
+          price: "$12.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.05_bafb08f4.jpg"
+        },
+        "How to win friend and influence people": {
+          author: "Dale Carnegie",
+          desc: "Timeless principles for effective communication and relationships.",
+          price: "$11.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.00_a952b870.jpg"
+        },
+        "The Alchemist – Paulo Coelho": {
+          author: "Paulo Coelho",
+          desc: "Inspirational novel about following your dreams and personal legend.",
+          price: "$14.99",
+          image: "images.jpeg"
+        },
+        "Psychology of Money": {
+          author: "Morgan Housel",
+          desc: "Timeless lessons on wealth, greed, and happiness through psychology.",
+          price: "$15.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.02_301597b0.jpg"
+        },
+        "48 laws of power": {
+          author: "Robert Greene",
+          desc: "The definitive manual for anyone interested in gaining power.",
+          price: "$17.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.03_18a07464.jpg"
+        },
+        "the law of HUman nature": {
+          author: "Robert Greene",
+          desc: "Master the laws of human nature to understand people and succeed.",
+          price: "$17.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.00_78765187.jpg"
+        },
+        "The mountain is you": {
+          author: "Brianna Wiest",
+          desc: "Transforming self-sabotage into self-mastery.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.02_1de81f24.jpg"
+        },
+        "Art of Seduction": {
+          author: "Robert Greene",
+          desc: "The ultimate guide to the seductive process and its techniques.",
+          price: "$16.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.04_103c4228.jpg"
+        },
+        "101 Essays tht will change the way you think": {
+          author: "Brianna Wiest",
+          desc: "Thought-provoking essays on self-awareness and personal growth.",
+          price: "$14.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.00_845d5f96.jpg"
+        },
+        "As long as the lemon trees Grow": {
+          author: "Randa Jarrar",
+          desc: "Powerful novel about love and resilience in difficult circumstances.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.03_7022a0df.jpg"
+        },
+        "Ego is the enemy": {
+          author: "Ryan Holiday",
+          desc: "How recognizing and overcoming ego leads to success and fulfillment.",
+          price: "$12.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.03_f57c3b95.jpg"
+        },
+        "Think and grow rich": {
+          author: "Napoleon Hill",
+          desc: "Classic principles for achieving financial success and personal achievement.",
+          price: "$10.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.02_b110743b.jpg"
+        },
+        "can't hurt me": {
+          author: "David Goggins",
+          desc: "Master your mind and defy the odds with this motivational guide.",
+          price: "$15.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.02_446c65d2.jpg"
+        },
+        "Sorrounded by idiot": {
+          author: "Thomas Erikson",
+          desc: "Understanding different personality types for better communication.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 12.48.03_a2a430c7.jpg"
+        },
+  
+        // Romance Books
+        "It Ends With Us – Colleen Hoover": {
+          author: "Colleen Hoover",
+          desc: "Heartbreaking romance novel about love, strength and difficult choices.",
+          price: "$14.99",
+          image: "https://m.media-amazon.com/images/I/81s0B6NYXML.jpg"
+        },
+        "it start with us": {
+          author: "Colleen Hoover",
+          desc: "Sequel to It Ends With Us, continuing the emotional journey.",
+          price: "$15.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.24_d5a8c2ad.jpg"
+        },
+        "Twisted love": {
+          author: "Ana Huang",
+          desc: "Steamy romance with complex characters and intense emotions.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.18_16e33a43.jpg"
+        },
+        "Twisted hate": {
+          author: "Ana Huang",
+          desc: "Enemies-to-lovers romance with sizzling chemistry.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.18_3d8d8165.jpg"
+        },
+        "Twisted game": {
+          author: "Ana Huang",
+          desc: "Royal romance with forbidden love and political intrigue.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.22_cd5c424d.jpg"
+        },
+        "Twisted lies": {
+          author: "Ana Huang",
+          desc: "Romantic suspense with secrets and dangerous attraction.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.20_9562fb0f.jpg"
+        },
+        "king of pride": {
+          author: "Ana Huang",
+          desc: "Alpha billionaire romance with intense passion.",
+          price: "$14.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.22_546b8c5c.jpg"
+        },
+        "king of wrath": {
+          author: "Ana Huang",
+          desc: "Arranged marriage romance with fiery chemistry.",
+          price: "$14.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.18_c4f01b24.jpg"
+        },
+        "king of Greed": {
+          author: "Ana Huang",
+          desc: "Second chance romance with a powerful CEO.",
+          price: "$14.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.20_d8dc9e63.jpg"
+        },
+        "king of sloth": {
+          author: "Ana Huang",
+          desc: "Playboy billionaire meets his match in this steamy romance.",
+          price: "$14.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.20_a80ed065.jpg"
+        },
+        "Ugly love": {
+          author: "Colleen Hoover",
+          desc: "Emotional romance about love that's messy, complicated and beautiful.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.21_86b452fa.jpg"
+        },
+        "maybe some day": {
+          author: "Colleen Hoover",
+          desc: "Unexpected love story with deep emotional connections.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.23_2f2e1612.jpg"
+        },
+        "confess": {
+          author: "Colleen Hoover",
+          desc: "Romantic novel about secrets, art and second chances.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.24_b66865c1.jpg"
+        },
+        "november 9": {
+          author: "Colleen Hoover",
+          desc: "Unique love story that unfolds on the same date over years.",
+          price: "$13.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.23_de29c8b2.jpg"
+        },
+        "Love hypothesis": {
+          author: "Ali Hazelwood",
+          desc: "Academic rivals-to-lovers romance with STEM setting.",
+          price: "$14.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.25_ac5967de.jpg"
+        },
+        "love from A to Z": {
+          author: "S.K. Ali",
+          desc: "Heartwarming Muslim romance about finding love unexpectedly.",
+          price: "$12.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.25_140daf5a.jpg"
+        },
+        "love from Makkah to Madina": {
+          author: "Umm Zakiyyah",
+          desc: "Islamic romance novel about spiritual and romantic love.",
+          price: "$11.99",
+          image: "WhatsApp Image 2025-04-29 at 15.15.23_197843d3.jpg"
+        }
+      };
+      // Mobile Menu Toggle
+      const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+      const searchBar = document.querySelector('.search-bar');
+
+      hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        searchBar.classList.toggle('active');
+      });
+
+      // Active Link Highlight
+      const links = document.querySelectorAll('.nav-links a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
+        });
+  
+      // Popup Elements
+      const popup = document.getElementById("bookPopup");
+      const popupImg = document.getElementById("popupBookImage");
+      const popupTitle = document.getElementById("popupBookTitle");
+      const popupAuthor = document.getElementById("popupBookAuthor").querySelector("span");
+      const popupDesc = document.getElementById("popupBookDesc");
+      const popupprice = document.getElementById("popupBookprice").querySelector("span");
+      const closeBtn = document.querySelector(".close-btn");
+      const orderBtn = document.getElementById("popupOrderBtn");
+  
+      // Make Books Clickable
+      document.querySelectorAll(".book").forEach(book => {
+        book.addEventListener("click", function() {
+          const title = this.querySelector(".book-title").textContent.trim();
+          const bookInfo = bookData[title];
+          
+          if (bookInfo) {
+            popupImg.src = bookInfo.image;
+            popupTitle.textContent = title;
+            popupAuthor.textContent = bookInfo.author;
+            popupDesc.textContent = bookInfo.desc;
+            popupprice.textContent = bookInfo.price;
+            
+            // Update order button to show correct book title
+            orderBtn.onclick = function() {
+              alert(`Order placed for ${title}`);
+              popup.style.display = "none";
+            };
+            
+            popup.style.display = "flex";
+            document.body.style.overflow = "hidden"; // Prevent scrolling when popup is open
+          }
+        });
+      });
+  
+      // Close Popup
+      closeBtn.addEventListener("click", () => {
+        popup.style.display = "none";
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+      });
+  
+      window.addEventListener("click", (e) => {
+        if (e.target === popup) {
+          popup.style.display = "none";
+          document.body.style.overflow = "auto"; // Re-enable scrolling
+        }
+      });
+
+      // Cart functionality
+      const cart = {
+        items: [],
+        savedItems: [],
+        total: 0,
+        
+        addItem(book) {
+          this.items.push(book);
+          this.updateCart();
+          this.animateAddToCart(book);
+        },
+        
+        removeItem(index) {
+          const item = this.items[index];
+          this.items.splice(index, 1);
+          this.updateCart();
+          this.animateRemoveFromCart(item);
+        },
+        
+        saveForLater(index) {
+          const item = this.items[index];
+          this.items.splice(index, 1);
+          this.savedItems.push(item);
+          this.updateCart();
+          this.animateSaveForLater(item);
+        },
+        
+        moveToCart(index) {
+          const item = this.savedItems[index];
+          this.savedItems.splice(index, 1);
+          this.items.push(item);
+          this.updateCart();
+          this.animateMoveToCart(item);
+        },
+        
+        removeSaved(index) {
+          const item = this.savedItems[index];
+          this.savedItems.splice(index, 1);
+          this.updateCart();
+          this.animateRemoveSaved(item);
+        },
+        
+        updateCart() {
+          const cartItems = document.querySelector('.cart-items');
+          const savedItems = document.querySelector('.saved-items');
+          const cartCount = document.querySelector('.cart-count');
+          const cartTotal = document.getElementById('cart-total-amount');
+          
+          // Update cart count
+          cartCount.textContent = this.items.length;
+          
+          // Update cart items
+          cartItems.innerHTML = this.items.map((item, index) => `
+            <div class="cart-item">
+              <img src="${item.image}" alt="${item.title}">
+              <div class="cart-item-details">
+                <div class="cart-item-title">${item.title}</div>
+                <div class="cart-item-author">By ${item.author}</div>
+                <div class="cart-item-price">${item.price}</div>
+                <div class="cart-item-actions">
+                  <button class="save-for-later-btn" onclick="cart.saveForLater(${index})">Save for Later</button>
+                  <button class="remove-item" onclick="cart.removeItem(${index})">Remove</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+          
+          // Update saved items
+          savedItems.innerHTML = this.savedItems.map((item, index) => `
+            <div class="saved-item">
+              <img src="${item.image}" alt="${item.title}">
+              <div class="saved-item-details">
+                <div class="saved-item-title">${item.title}</div>
+                <div class="saved-item-author">By ${item.author}</div>
+                <div class="saved-item-actions">
+                  <button class="move-to-cart" onclick="cart.moveToCart(${index})">Move to Cart</button>
+                  <button class="remove-saved" onclick="cart.removeSaved(${index})">Remove</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+          
+          // Update total
+          this.total = this.items.reduce((sum, item) => {
+            const price = parseFloat(item.price.replace(/[^0-9.-]+/g, ''));
+            return sum + (isNaN(price) ? 0 : price);
+          }, 0);
+          cartTotal.textContent = this.total.toFixed(2);
+        },
+        
+        animateAddToCart(book) {
+          const cartIcon = document.querySelector('.cart-icon-wrapper');
+          cartIcon.classList.add('bounce');
+          setTimeout(() => cartIcon.classList.remove('bounce'), 300);
+        },
+        
+        animateRemoveFromCart(item) {
+          const cartItem = document.querySelector(`.cart-item:has(img[alt="${item.title}"])`);
+          if (cartItem) {
+            cartItem.classList.add('removing');
+            setTimeout(() => cartItem.remove(), 300);
+          }
+        },
+        
+        animateSaveForLater(item) {
+          const cartItem = document.querySelector(`.cart-item:has(img[alt="${item.title}"])`);
+          if (cartItem) {
+            cartItem.classList.add('removing');
+            setTimeout(() => cartItem.remove(), 300);
+          }
+        },
+        
+        animateMoveToCart(item) {
+          const savedItem = document.querySelector(`.saved-item:has(img[alt="${item.title}"])`);
+          if (savedItem) {
+            savedItem.classList.add('removing');
+            setTimeout(() => savedItem.remove(), 300);
+          }
+        },
+        
+        animateRemoveSaved(item) {
+          const savedItem = document.querySelector(`.saved-item:has(img[alt="${item.title}"])`);
+          if (savedItem) {
+            savedItem.classList.add('removing');
+            setTimeout(() => savedItem.remove(), 300);
+          }
+        }
+      };
+
+      // Cart popup functionality
+      const cartPopup = document.querySelector('.cart-popup');
+      const cartIcon = document.getElementById('cart-icon');
+      const closeCart = document.querySelector('.close-cart');
+
+      cartIcon.addEventListener('click', () => {
+        cartPopup.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      });
+
+      closeCart.addEventListener('click', () => {
+        cartPopup.classList.add('closing');
+        setTimeout(() => {
+          cartPopup.style.display = 'none';
+          cartPopup.classList.remove('closing');
+          document.body.style.overflow = 'auto';
+        }, 300);
+      });
+
+      // Update the book click handler to add items to cart
+      document.querySelectorAll('.book').forEach(book => {
+        book.addEventListener('click', function() {
+          const title = this.querySelector('.book-title').textContent.trim();
+          const bookInfo = bookData[title];
+          
+          if (bookInfo) {
+            // Add to cart
+            cart.addItem({
+              title: title,
+              author: bookInfo.author,
+              price: bookInfo.price,
+              image: bookInfo.image
+            });
+            
+            // Show popup
+            popupImg.src = bookInfo.image;
+            popupTitle.textContent = title;
+            popupAuthor.textContent = bookInfo.author;
+            popupDesc.textContent = bookInfo.desc;
+            popupprice.textContent = bookInfo.price;
+            
+            // Update order button
+            orderBtn.onclick = function() {
+              cart.addItem({
+                title: title,
+                author: bookInfo.author,
+                price: bookInfo.price,
+                image: bookInfo.image
+              });
+              popup.style.display = "none";
+              document.body.style.overflow = "auto";
+            };
+            
+            popup.style.display = "flex";
+            document.body.style.overflow = "hidden";
+          }
+        });
+      });
+
+      // Checkout button functionality
+      document.querySelector('.checkout-btn').addEventListener('click', () => {
+        if (cart.items.length > 0) {
+          alert('Thank you for your order! We will contact you shortly.');
+          cart.items = [];
+          cart.updateCart();
+          cartPopup.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        } else {
+          alert('Your cart is empty!');
+        }
+      });
+
+      // Hero Slider Functionality
+      (function() {
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-slider-dots .dot');
+        let current = 0;
+        let interval;
+
+        function showSlide(idx) {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === idx);
+            dots[i].classList.toggle('active', i === idx);
+          });
+          current = idx;
+        }
+
+        function nextSlide() {
+          let next = (current + 1) % slides.length;
+          showSlide(next);
+        }
+
+        function startSlider() {
+          interval = setInterval(nextSlide, 3000);
+        }
+
+        function stopSlider() {
+          clearInterval(interval);
+        }
+
+        dots.forEach((dot, idx) => {
+          dot.addEventListener('click', () => {
+            showSlide(idx);
+            stopSlider();
+            startSlider();
+          });
+        });
+
+        showSlide(0);
+        startSlider();
+      })();
+    </script>
+    
+  </body>
+  </html>
